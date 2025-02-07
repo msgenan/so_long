@@ -9,13 +9,11 @@ PRINTF = ./src/ft_printf/libftprintf.a
 OBJS = $(SRCS:.c=.o)
 
 $(NAME): $(OBJS) $(PRINTF)
-	$(CC) $(CFLAGS) $(FT_PRINTF) $(OBJS) -lXext -lX11 -lm -o $(NAME)
+	$(CC) $(CFLAGS) $(MLXFLAGS) $(FT_PRINTF) $(MLX) $(OBJS) -o $(NAME)
 	@clear
 	@echo "'-'"
 
 all: $(MLX) $(NAME)
-
-
 
 $(MLX) :
 	make -C ./src/mlx

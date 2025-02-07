@@ -28,6 +28,21 @@ typedef struct s_content
 
 }	t_content;
 
+typedef struct mlx
+{
+	void *mlx;
+	void *window;
+	void *floor;
+	void *exit;
+	void *player;
+	void *wall;
+	void *collect;
+	int x;
+	int y;
+
+}	mlx;
+
+
 void map_control(t_content *x);
 void check_char(t_content *x);
 void check_map(t_content *x);
@@ -35,7 +50,7 @@ void read_map(t_content *x);
 int	length(const char *str);
 void error(char *error);
 void flood_check(t_content *x);
-void all_map_checks(t_content *x);
+void all_map_checks(t_content *x, mlx *a);
 void	flood_fill(t_content *x, int playerx, int playery);
 void	assignment_location(t_content *x, char c, int i);
 

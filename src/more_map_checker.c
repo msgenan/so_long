@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:02:18 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/04 17:10:48 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/07 20:16:55 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,5 @@ void flood_check(t_content *x)
 				error("Mapte ulaşılamayan alan tespit edildi");
 		}
 	}
+	x->random = 0;
 }
