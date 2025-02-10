@@ -7,8 +7,21 @@
 #include <stdio.h>
 #include "./gnl/get_next_line.h"
 #include "./mlx/mlx.h"
-#include "./mlx/mlx_int.h"
 
+typedef struct s_mlx
+{
+	void *mlx;
+	void *window;
+	void *floor;
+	void *exit;
+	void *player;
+	void *wall;
+	void *collect;
+	int x;
+	int y;
+	int move;
+
+}	t_mlx;
 
 typedef struct s_content
 {
@@ -25,34 +38,26 @@ typedef struct s_content
 	int c;
 	int e;
 	int p;
+	int counter;
+	int t;
+	t_mlx *a;
 
 }	t_content;
 
-typedef struct mlx
-{
-	void *mlx;
-	void *window;
-	void *floor;
-	void *exit;
-	void *player;
-	void *wall;
-	void *collect;
-	int x;
-	int y;
-
-}	mlx;
-
-
-void map_control(t_content *x);
-void check_char(t_content *x);
-void check_map(t_content *x);
-void read_map(t_content *x);
-int	length(const char *str);
-void error(char *error);
-void flood_check(t_content *x);
-void all_map_checks(t_content *x, mlx *a);
+void	map_control(t_content *x);
+void 	check_char(t_content *x);
+void 	check_map(t_content *x);
+void 	read_map(t_content *x);
+int		length(const char *str);
+void 	error(char *error);
+void 	flood_check(t_content *x);
+void 	all_map_checks(t_content *x);
 void	flood_fill(t_content *x, int playerx, int playery);
 void	assignment_location(t_content *x, char c, int i);
-
+void	parse_img(t_content *x);
+void	textures_to_variable(t_content *x);
+int		key_press(int keycode, t_content *x);
+void	key_press_update(char move, int nby, int nbx, int flag, t_content *x);
+void	which_key(int nby, int nbx, t_content *x);
 
 #endif

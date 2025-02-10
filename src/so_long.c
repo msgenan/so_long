@@ -6,45 +6,35 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:14:54 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/07 20:38:59 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/10 14:30:23 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void all_map_checks(t_content *x, mlx *a)
-{
-	x->random = -1;
-	map_control(x);
-	read_map(x);
-	check_map(x);
-	check_char(x);
-	flood_fill(x, x->playerx, x->playery);
-	flood_check(x);
-	a->x = x->horizontal * 64;
-	a->y = x->vertical * 64;
-}
-
-
 int main(int ac, char *av[])
 {
 	if (ac != 2)
 		return(0);
-
 	t_content *x;
 	x = malloc(sizeof(t_content));
+	if (!x)
+		error("t_content için bellek ayırılmasında bir hata yaşandı");
+	x->a = malloc(sizeof(t_mlx));
+	if (!x->a)
+		error("t_mlx için bellek ayırılmasında bir hata yaşandı");
 	x->path = av[1];
-	mlx *a;
-	a = malloc(sizeof(mlx));
-	a->mlx = mlx_init();
-	if (!a->mlx)
-		error("mlx fonksiyonu başlatılamadı");
-	all_map_checks(x, a);
-	a->window = mlx_new_window(a->mlx, a->x, a->y, "so_long");
-	// window oluşamama erroru yaz
-	
-	int i = -1;
-	while (++i < x->vertical)
-		printf("%s", x->map[i]);
-	printf("\n");
+	all_map_checks(x);
+	x->a->mlx = mlx_init();
+	if (!x->a->mlx)
+		error("mlx fonksiyonu başlatılamadı!");
+	x->a->window = mlx_new_window(x->a->mlx, x->a->x, x->a->y, "so_long");
+	if (!x->a->window)
+		error("mlx pencere oluşturmada bir hata yaşadı!");
+	x->a->move = 0;
+	x->counter = 0;
+	textures_to_variable(x);
+	parse_img(x);
+	mlx_key_hook(x->a->window, key_press, x);
+	mlx_loop(x->a->mlx);
 }
