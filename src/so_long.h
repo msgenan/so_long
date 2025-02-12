@@ -33,13 +33,12 @@ typedef struct s_content
 	int random;
 	int playerx;
 	int playery;
-	int exitx;
-	int exity;
+	int newplayerx;
+	int newplayery;
 	int c;
 	int e;
 	int p;
 	int counter;
-	int t;
 	t_mlx *a;
 
 }	t_content;
@@ -49,15 +48,16 @@ void 	check_char(t_content *x);
 void 	check_map(t_content *x);
 void 	read_map(t_content *x);
 int		length(const char *str);
-void 	error(char *error);
+void	error(char *error);
 void 	flood_check(t_content *x);
 void 	all_map_checks(t_content *x);
 void	flood_fill(t_content *x, int playerx, int playery);
-void	assignment_location(t_content *x, char c, int i);
 void	parse_img(t_content *x);
 void	textures_to_variable(t_content *x);
 int		key_press(int keycode, t_content *x);
-void	key_press_update(char move, int nby, int nbx, int flag, t_content *x);
-void	which_key(int nby, int nbx, t_content *x);
+void 	key_press_update(char move, int nby, int nbx, t_content *x);
+void	which_key(t_content *x);
+void	parser(t_content *x);
+int		cleaner(t_content *x);
 
 #endif

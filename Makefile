@@ -14,8 +14,8 @@ MLX = ./src/mlx/libmlx.a
 PRINTF = ./src/ft_printf/libftprintf.a
 OBJS = $(SRCS:.c=.o)
 
-$(NAME): $(OBJS) $(PRINTF) $(MLX)
-	$(CC) $(CFLAGS) $(MLX) $(PRINTF) $(OBJS) -o $(NAME) $(MLXFLAGS)
+$(NAME): $(PRINTF) $(MLX)
+	$(CC) $(CFLAGS) $(MLX) $(PRINTF) $(SRCS) -o $(NAME) $(MLXFLAGS)
 	@clear
 	@echo "its done"
 
@@ -27,8 +27,7 @@ $(MLX) :
 $(PRINTF) :
 	make -C ./src/ft_printf
 
-clean : 
-	rm -rf $(OBJS)
+clean :
 	make clean -C ./src/ft_printf
 	make clean -C ./src/mlx
 

@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 02:08:16 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/04 20:33:46 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/12 20:37:20 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void read_map(t_content *x)
 	if (!(x->map[i - 1]) || !(x->mapx[i - 1]))
 		error("Gnl fonksiyonunda bir problem oluştu!");
 	x->horizontal = length(x->map[0]);
+	x->random = -1;
 }
 void check_map(t_content *x)
 {
@@ -75,8 +76,6 @@ void check_map(t_content *x)
 void check_char(t_content *x)
 {
 	int i;
-
-	i = -1;
 	while(++x->random < x->vertical)
 	{
 		i = -1;
@@ -85,9 +84,13 @@ void check_char(t_content *x)
 			if (x->map[x->random][i] == 'C')
 				x->c++;
 			else if (x->map[x->random][i] == 'E')
-				assignment_location(x, 'E', i);
+				x->e++;
 			else if (x->map[x->random][i] == 'P')
-				assignment_location(x, 'P', i);
+			{
+				x->p++;
+				x->playery = x->random;
+				x->playerx = i;
+			}
 			else if (x->map[x->random][i] != '1' && x->map[x->random][i] != '0')
 				error("Mapte bilinmeyen harf kullanımı mevcut!");
 		}
@@ -96,18 +99,13 @@ void check_char(t_content *x)
 		error("Verdiğiniz karakterler kurallara uymuyor");
 	x->random = -1;
 }
-void	assignment_location(t_content *x, char c, int i)
+void all_map_checks(t_content *x)
 {
-	if (c == 'P')
-	{
-		x->p++;
-		x->playery = x->random;
-		x->playerx = i;
-	}
-	if (c == 'E')
-	{
-		x->e++;
-		x->exity = x->random;
-		x->exitx = i;
-	}	
+	x->random = -1;
+	map_control(x);
+	read_map(x);
+	check_map(x);
+	check_char(x);
+	flood_fill(x, x->playerx, x->playery);
+	flood_check(x);
 }

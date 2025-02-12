@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:14:54 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/10 14:30:23 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/12 21:16:49 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,12 @@ int main(int ac, char *av[])
 	x->a->mlx = mlx_init();
 	if (!x->a->mlx)
 		error("mlx fonksiyonu başlatılamadı!");
-	x->a->window = mlx_new_window(x->a->mlx, x->a->x, x->a->y, "so_long");
+	if (x->horizontal <= 0 || x->vertical <= 0)
+    	error("Harita boyutları geçersiz!");
+	x->a->window = mlx_new_window(x->a->mlx, x->horizontal * 64, x->vertical * 64, "so_long");
+	if (!x->a->window)
+    	error("mlx pencere oluşturmada bir hata yaşadı!");
 	if (!x->a->window)
 		error("mlx pencere oluşturmada bir hata yaşadı!");
-	x->a->move = 0;
-	x->counter = 0;
-	textures_to_variable(x);
-	parse_img(x);
-	mlx_key_hook(x->a->window, key_press, x);
-	mlx_loop(x->a->mlx);
+	parser(x);
 }
