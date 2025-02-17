@@ -1,30 +1,58 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   functions.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 03:06:54 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/12 21:17:11 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/17 21:05:04 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void error(char *error)
+void	error(char *error)
 {
-    perror(error);
-    exit(0);
+	perror(error);
+	exit(0);
 }
-int cleaner(t_content *x)
+
+int	ft_cleaner(t_content *x)
 {
-	free(x->map);
-	free(x->mapx);
+	ft_free_map(x);
+	ft_image_destroy(x);
+	free(x->a->mlx);
 	free(x->a);
 	free(x);
 	exit(0);
-	return(0);
+	return (0);
+}
+void ft_image_destroy(t_content *x)
+{
+	mlx_clear_window(x->a->mlx, x->a->window);
+	mlx_destroy_window(x->a->mlx, x->a->window);
+	mlx_destroy_image(x->a->mlx, x->a->collect);
+	mlx_destroy_image(x->a->mlx, x->a->player);
+	mlx_destroy_image(x->a->mlx, x->a->wall);
+	mlx_destroy_image(x->a->mlx, x->a->exit);
+	mlx_destroy_image(x->a->mlx, x->a->floor);
+	mlx_destroy_display(x->a->mlx);
+}
+
+void ft_free_map(t_content *x)
+{
+	int i;
+
+	i = 0;
+	while(x->vertical > i)
+	{
+		free(x->map[i]);
+		free(x->mapx[i]);
+		i++;
+	}
+	free(x->map);
+	free(x->mapx);
 }
 int	length(const char *str)
 {
@@ -34,14 +62,4 @@ int	length(const char *str)
 	while (str[i] != '\0' && str[i] != '\n')
 		i++;
 	return (i);
-}
-void parser(t_content *x)
-{
-	x->a->move = 0;
-	x->counter = 0;
-	textures_to_variable(x);
-	parse_img(x);
-	mlx_key_hook(x->a->window, key_press, x);
-	mlx_hook(x->a->window, 17, 0, cleaner, x);
-	mlx_loop(x->a->mlx);
 }

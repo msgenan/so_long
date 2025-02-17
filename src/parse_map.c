@@ -6,119 +6,77 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:38:23 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/12 20:42:21 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/17 20:41:45 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void textures_to_variable(t_content *x)
+void	map_parser(t_content *x)
 {
-	int i = 64;
-	int j = 64;
-
-	x->a->collect = mlx_xpm_file_to_image(x->a->mlx, "./src/textures/collect.xpm", &i, &j);
-	if (!x->a->collect)
-		printf("Error: collect.xpm yüklenemedi!\n");
-	x->a->exit = mlx_xpm_file_to_image(x->a->mlx, "./src/textures/exit.xpm", &i, &j);
-	if (!x->a->exit)
-		printf("Error: exit.xpm yüklenemedi!\n");
-	x->a->floor = mlx_xpm_file_to_image(x->a->mlx, "./src/textures/floor.xpm", &i, &j);
-	if (!x->a->floor)
-		printf("Error: floor.xpm yüklenemedi!\n");
-	x->a->player = mlx_xpm_file_to_image(x->a->mlx, "./src/textures/player.xpm", &i, &j);
-	if (!x->a->player)
-		printf("Error: player.xpm yüklenemedi!\n");
-	x->a->wall = mlx_xpm_file_to_image(x->a->mlx, "./src/textures/wall.xpm", &i, &j);
-	if (!x->a->wall)
-		printf("Error: wall.xpm yüklenemedi!\n");
+	x->a->move = 0;
+	x->counter = 0;
+	x->a->mlx = mlx_init();
+	if (!x->a->mlx)
+		return (ft_free_map(x), free(x->a),
+			free(x), error("Failed to initialize the mlx function!"));
+	x->a->window = mlx_new_window(x->a->mlx, x->horizontal * 64,
+			x->vertical * 64, "so_long");
+	if (!x->a->window)
+		return (ft_free_map(x), free(x->a->mlx), free(x->a),
+			free(x), error("mlx pencere oluşturmada bir hata yaşadı!"));
+	x->random = -1;
+	textures_to_variable(x);
+	parse_img(x);
+	mlx_key_hook(x->a->window, key_press, x);
+	mlx_hook(x->a->window, 17, 0, ft_cleaner, x);
+	mlx_loop(x->a->mlx);
 }
-void parse_img(t_content *x)
+
+void	textures_to_variable(t_content *x)
 {
 	int	i;
 	int	j;
 
-	i = 0;
-	while (i < x->vertical)
-	{
-		j = 0;
-		while (j < x->horizontal)
-		{
-			if (x->map[i][j] == '1')
-				mlx_put_image_to_window(x->a->mlx, x->a->window, x->a->wall, j * 64, i * 64);
-			else if (x->map[i][j] == '0')
-				mlx_put_image_to_window(x->a->mlx, x->a->window, x->a->floor, j * 64, i * 64);
-			else if (x->map[i][j] == 'E')
-				mlx_put_image_to_window(x->a->mlx, x->a->window, x->a->exit, j * 64, i * 64);
-			else if (x->map[i][j] == 'C')
-				mlx_put_image_to_window(x->a->mlx, x->a->window, x->a->collect, j * 64, i * 64);
-			else if (x->map[i][j] == 'P')
-				mlx_put_image_to_window(x->a->mlx, x->a->window, x->a->player, j * 64, i * 64);
+	i = 64;
+	j = 64;
+	x->a->collect = mlx_xpm_file_to_image(x->a->mlx,
+			"./src/textures/collect.xpm", &i, &j);
+	x->a->exit = mlx_xpm_file_to_image(x->a->mlx,
+			"./src/textures/exit.xpm", &i, &j);
+	x->a->floor = mlx_xpm_file_to_image(x->a->mlx,
+			"./src/textures/floor.xpm", &i, &j);
+	x->a->player = mlx_xpm_file_to_image(x->a->mlx,
+			"./src/textures/player.xpm", &i, &j);
+	x->a->wall = mlx_xpm_file_to_image(x->a->mlx,
+			"./src/textures/wall.xpm", &i, &j);
+}
 
-			j++;
-		}
-		i++;
-	}
-}
-int key_press(int keycode, t_content *x)
+void	parse_img(t_content *x)
 {
-	if (keycode == 65307)
-		exit(0);
-	else if (keycode == 119 || keycode == 65362)
-		key_press_update('W', -1, 0, x);
-	else if (keycode == 97 || keycode == 65361)
-		key_press_update('A', 0, -1, x);
-	else if (keycode == 115 || keycode == 65364)
-		key_press_update('S', 1, 0, x);
-	else if (keycode == 100 || keycode == 65363)
-		key_press_update('D', 0, 1, x);
-	return(0);
-}
-void key_press_update(char move, int nby, int nbx, t_content *x)
-{
-	if (move == 'W' && x->map[x->playery + nby][x->playerx + nbx] != '1')
+	int	i;
+
+	i = -1;
+	while (++i < x->vertical)
 	{
-		x->newplayery = x->playery + nby;
-		x->newplayerx = x->playerx + nbx;
-		which_key(x);
-	}
-	else if (move == 'A' && x->map[x->playery + nby][x->playerx + nbx] != '1')
-	{
-		x->newplayery = x->playery + nby;
-		x->newplayerx = x->playerx + nbx;
-		which_key(x);
-	}
-	else if (move == 'S' && x->map[x->playery + nby][x->playerx + nbx] != '1')
-	{
-		x->newplayery = x->playery + nby;
-		x->newplayerx = x->playerx + nbx;
-		which_key(x);
-	}
-	else if (move == 'D' && x->map[x->playery + nby][x->playerx + nbx] != '1')
-	{
-		x->newplayery = x->playery + nby;
-		x->newplayerx = x->playerx + nbx;
-		which_key(x);
-	}
-}
-void which_key(t_content *x)
-{
-	x->a->move++;
-	if (x->map[x->newplayery][x->newplayerx] == 'C')
-		x->counter++;
-	else if (x->map[x->newplayery][x->newplayerx] == 'E')
-	{
-		if (x->counter == x->c)
+		x->random = -1;
+		while (++x->random < x->horizontal)
 		{
-			printf("oyunu bitirdiniz, tebrikler!\n");
-			printf("Hamle sayısı: %d\n", x->a->move);
-			exit(0);
+			if (x->map[i][x->random] == '1')
+				mlx_put_image_to_window(x->a->mlx, x->a->window,
+					x->a->wall, x->random * 64, i * 64);
+			else if (x->map[i][x->random] == '0')
+				mlx_put_image_to_window(x->a->mlx, x->a->window,
+					x->a->floor, x->random * 64, i * 64);
+			else if (x->map[i][x->random] == 'E')
+				mlx_put_image_to_window(x->a->mlx, x->a->window,
+					x->a->exit, x->random * 64, i * 64);
+			else if (x->map[i][x->random] == 'C')
+				mlx_put_image_to_window(x->a->mlx, x->a->window,
+					x->a->collect, x->random * 64, i * 64);
+			else if (x->map[i][x->random] == 'P')
+				mlx_put_image_to_window(x->a->mlx, x->a->window,
+					x->a->player, x->random * 64, i * 64);
 		}
-		return;
 	}
-	x->map[x->playery][x->playerx] = '0';
-	x->map[x->newplayery][x->newplayerx] = 'P';
-	x->playery = x->newplayery;
-	x->playerx = x->newplayerx;
-	parse_img(x);
 }

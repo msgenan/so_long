@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   more_map_checker.c                                 :+:      :+:    :+:   */
+/*   flood_fill.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:02:18 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/12 19:54:17 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/17 19:29:28 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@ void	flood_fill(t_content *x, int playerx, int playery)
 	flood_fill(x, playerx, playery - 1);
 }
 
-void flood_check(t_content *x)
+void	flood_check(t_content *x)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	while(++x->random < x->vertical)
+	while (++x->random < x->vertical)
 	{
 		i = -1;
-		while(++i < x->horizontal)
+		while (++i < x->horizontal)
 		{
 			if (x->mapx[x->random][i] != '1' && x->mapx[x->random][i] != 'x'
 			&& x->mapx[x->random][i] != 'E')
-				error("Mapte ulaşılamayan alan tespit edildi");
+				return(ft_free_map(x), free(x), error("There is an unreachable area in the map!"));
 		}
 	}
 }

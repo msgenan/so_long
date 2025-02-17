@@ -1,11 +1,12 @@
 NAME = so_long
 SRCS = ./src/so_long.c \
+./src/utils.c \
+./src/key_press.c \
+./src/parse_map.c \
+./src/flood_fill.c \
 ./src/map_checker.c \
-./src/more_map_checker.c \
-./src/functions.c \
 ./src/gnl/get_next_line.c \
-./src/gnl/get_next_line_utils.c \
-./src/parse_map.c
+./src/gnl/get_next_line_utils.c
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g

@@ -6,80 +6,87 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 02:08:16 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/12 20:37:20 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/17 20:54:17 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void map_control(t_content *x)
+void	map_control(t_content *x)
 {
-	char *str;
-	int i;
-	int j;
-	
+	char	*str;
+	int		i;
+	int		j;
+
 	i = 0;
 	j = 0;
 	str = "reb.";
-	
-	while(x->path[i])
+	while (x->path[i])
 		i++;
-	while((x->path[--i] == str[j]) && str[j])
+	while ((x->path[--i] == str[j]) && str[j])
 		j++;
-	if(j != 4)
-		return(error("Map girdisi hatalı!"));
+	if (j != 4)
+		return(free(x), error("Map input is incorrect!"));
 }
-void read_map(t_content *x)
+
+void	read_map(t_content *x)
 {
-	int i;
-	int fd;
+	int	i;
+	int	fd;
 
 	i = 0;
 	x->vertical = 0;
 	fd = open(x->path, O_RDWR);
-	while(get_next_line(fd))
+	while ((x->gnl = get_next_line(fd)))
+	{
+		free(x->gnl);
 		x->vertical++;
+	}
 	x->map = malloc(sizeof(char *) * x->vertical);
 	x->mapx = malloc(sizeof(char *) * x->vertical);
-	close(fd);
+	close (fd);
 	fd = open(x->path, O_RDWR);
-	while(i < x->vertical)
-    	x->map[i++] = get_next_line(fd);
-	close(fd);
+	while (i < x->vertical)
+		x->map[i++] = get_next_line(fd);
+	close (fd);
 	fd = open(x->path, O_RDWR);
 	i = 0;
-	while(i < x->vertical)
-    	x->mapx[i++] = get_next_line(fd);
+	while (i < x->vertical)
+		x->mapx[i++] = get_next_line(fd);
 	close(fd);
-	if (!(x->map[i - 1]) || !(x->mapx[i - 1]))
-		error("Gnl fonksiyonunda bir problem oluştu!");
+	if (!(x->map) || !(x->mapx))
+		return(ft_free_map(x), free(x), error("An error occurred while reading the map!"));
+}
+
+void	check_map(t_content *x)
+{
 	x->horizontal = length(x->map[0]);
 	x->random = -1;
-}
-void check_map(t_content *x)
-{
-	while(++x->random < x->vertical)
+	while (++x->random < x->vertical)
 	{
 		if (length(x->map[x->random]) != x->horizontal)
-			error("Girdiğiniz mapin satırları hatalı!");
-		if (x->map[x->random][0] != '1' || x->map[x->random][x->horizontal - 1] != '1')
-			error("Map duvarlarında problem var!");
+			return(ft_free_map(x), free(x), error("Map lines are incorrect!"));
+		if (x->map[x->random][0] != '1' ||
+			x->map[x->random][x->horizontal - 1] != '1')
+			return(ft_free_map(x), free(x), error("Map walls are incorrect!"));
 	}
-	while(++x->random < x->vertical + x->horizontal)
+	while (++x->random < x->vertical + x->horizontal)
 	{
-		if (x->map[0][x->random - x->vertical] != '1' 
+		if (x->map[0][x->random - x->vertical] != '1'
 		|| x->map[x->vertical - 1][x->random - x->vertical] != '1')
-			error("Map duvarlarında problem var!");
+			return(ft_free_map(x), free(x), error("Map walls are incorrect!"));
 	}
 	x->random = -1;
 }
-void check_char(t_content *x)
+
+void	check_char(t_content *x)
 {
-	int i;
-	while(++x->random < x->vertical)
+	int	i;
+
+	while (++x->random < x->vertical)
 	{
 		i = -1;
-		while(++i < x->horizontal)
+		while (++i < x->horizontal)
 		{
 			if (x->map[x->random][i] == 'C')
 				x->c++;
@@ -92,18 +99,21 @@ void check_char(t_content *x)
 				x->playerx = i;
 			}
 			else if (x->map[x->random][i] != '1' && x->map[x->random][i] != '0')
-				error("Mapte bilinmeyen harf kullanımı mevcut!");
+				return(ft_free_map(x), free(x), error("Map variables are incorrect!"));
 		}
 	}
 	if (x->e != 1 || x->p != 1 || x->c < 1)
-		error("Verdiğiniz karakterler kurallara uymuyor");
+		return(ft_free_map(x), free(x), error("Numbers of the map variables are incorrect!"));
 	x->random = -1;
 }
-void all_map_checks(t_content *x)
+
+void	all_map_checks(t_content *x)
 {
 	x->random = -1;
 	map_control(x);
 	read_map(x);
+	if (x->vertical == 0)
+		return(ft_free_map(x), free(x), error("Invalid map dimensions!"));
 	check_map(x);
 	check_char(x);
 	flood_fill(x, x->playerx, x->playery);
