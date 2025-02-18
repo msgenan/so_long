@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 02:08:16 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/17 20:54:17 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/19 00:24:54 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	check_map(t_content *x)
 {
 	x->horizontal = length(x->map[0]);
 	x->random = -1;
+	if ((x->map[x->vertical - 1][x->horizontal]) == '\n')
+			return(ft_free_map(x), free(x), error("The last row of the map contains only a newline!"));
 	while (++x->random < x->vertical)
 	{
 		if (length(x->map[x->random]) != x->horizontal)

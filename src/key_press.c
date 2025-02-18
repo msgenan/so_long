@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 16:22:20 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/17 21:06:53 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/19 00:42:55 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,15 @@ void	key_press_update(char move, int nby, int nbx, t_content *x)
 void	which_key(t_content *x)
 {
 	x->a->move++;
+	ft_printf("current move: %d\n", x->a->move);
 	if (x->map[x->newplayery][x->newplayerx] == 'C')
 		x->counter++;
 	else if (x->map[x->newplayery][x->newplayerx] == 'E')
 	{
 		if (x->counter == x->c)
 		{
-			printf("oyunu bitirdiniz, tebrikler!\n");
-			printf("Hamle sayısı: %d\n", x->a->move);
+			ft_printf("\n\ntotal move: %d\n", x->a->move);
+			ft_printf("Congratulations, you have completed the game!\n");
 			ft_cleaner(x);
 		}
 		return ;

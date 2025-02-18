@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 20:38:23 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/17 20:41:45 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/18 19:02:57 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	map_parser(t_content *x)
 			x->vertical * 64, "so_long");
 	if (!x->a->window)
 		return (ft_free_map(x), free(x->a->mlx), free(x->a),
-			free(x), error("mlx pencere oluşturmada bir hata yaşadı!"));
+			free(x), error("Failed to initialize the mlx_window function!"));
 	x->random = -1;
 	textures_to_variable(x);
 	parse_img(x);
