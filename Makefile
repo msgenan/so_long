@@ -57,7 +57,7 @@ fclean :
 
 re : fclean all
 
-gg : clean fclean
+gg : clean fclean cclone
 	@clear
 
 .PHONY: all clean fclean re gg

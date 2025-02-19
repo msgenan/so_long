@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 02:08:16 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/19 03:24:06 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/19 04:57:00 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,8 @@ void	map_control(t_content *x)
 
 void	read_map(t_content *x)
 {
-	int	i;
 	int	fd;
 
-	i = 0;
 	fd = open(x->path, O_RDWR);
 	x->gnl = get_next_line(fd);
 	while (x->gnl)
@@ -45,15 +43,17 @@ void	read_map(t_content *x)
 	}
 	x->map = malloc(sizeof(char *) * x->vertical);
 	x->mapx = malloc(sizeof(char *) * x->vertical);
+	if (!x->map || !x->mapx)
+		return (free(x), error("Memory allocation for map failed!"));
 	close (fd);
 	fd = open(x->path, O_RDWR);
-	while (i < x->vertical)
-		x->map[i++] = get_next_line(fd);
+	while (x->random < x->vertical)
+		x->map[x->random++] = get_next_line(fd);
 	close (fd);
 	fd = open(x->path, O_RDWR);
-	i = 0;
-	while (i < x->vertical)
-		x->mapx[i++] = get_next_line(fd);
+	x->random = 0;
+	while (x->random < x->vertical)
+		x->mapx[x->random++] = get_next_line(fd);
 	close(fd);
 }
 
@@ -110,7 +110,7 @@ void	check_char(t_content *x)
 
 void	all_map_checks(t_content *x)
 {
-	x->random = -1;
+	x->random = 0;
 	x->c = 0;
 	x->e = 0;
 	x->p = 0;
@@ -122,6 +122,7 @@ void	all_map_checks(t_content *x)
 	if (!(x->map) || !(x->mapx))
 		return (ft_free_map(x), free(x),
 			error ("An error occurred while reading the map!"));
+	x->random = -1;
 	check_map(x);
 	check_char(x);
 	if (x->e != 1 || x->p != 1 || x->c < 1)
