@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:02:18 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/17 19:29:28 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/19 02:54:58 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	flood_check(t_content *x)
 		{
 			if (x->mapx[x->random][i] != '1' && x->mapx[x->random][i] != 'x'
 			&& x->mapx[x->random][i] != 'E')
-				return(ft_free_map(x), free(x), error("There is an unreachable area in the map!"));
+				return (ft_free_map(x), free(x),
+					error ("There is an unreachable area in the map!"));
 		}
 	}
 }

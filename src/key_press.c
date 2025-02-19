@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 16:22:20 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/19 00:42:55 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/19 02:31:56 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	which_key(t_content *x)
 	{
 		if (x->counter == x->c)
 		{
-			ft_printf("\n\ntotal move: %d\n", x->a->move);
+			ft_printf("\ntotal move: %d\n", x->a->move);
 			ft_printf("Congratulations, you have completed the game!\n");
 			ft_cleaner(x);
 		}

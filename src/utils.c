@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 03:06:54 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/18 23:42:26 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/19 03:25:48 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	ft_cleaner(t_content *x)
 	exit(0);
 	return (0);
 }
-void ft_image_destroy(t_content *x)
+
+void	ft_image_destroy(t_content *x)
 {
 	mlx_clear_window(x->a->mlx, x->a->window);
 	mlx_destroy_window(x->a->mlx, x->a->window);
@@ -40,12 +41,12 @@ void ft_image_destroy(t_content *x)
 	mlx_destroy_display(x->a->mlx);
 }
 
-void ft_free_map(t_content *x)
+void	ft_free_map(t_content *x)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(x->vertical > i)
+	while (x->vertical > i)
 	{
 		free(x->map[i]);
 		free(x->mapx[i]);
@@ -54,6 +55,7 @@ void ft_free_map(t_content *x)
 	free(x->map);
 	free(x->mapx);
 }
+
 int	length(const char *str)
 {
 	int	i;

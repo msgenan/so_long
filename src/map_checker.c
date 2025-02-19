@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 02:08:16 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/19 00:24:54 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/19 03:24:06 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	map_control(t_content *x)
 	while ((x->path[--i] == str[j]) && str[j])
 		j++;
 	if (j != 4)
-		return(free(x), error("Map input is incorrect!"));
+		return (free(x), error ("Map input is incorrect!"));
 }
 
 void	read_map(t_content *x)
@@ -35,12 +35,13 @@ void	read_map(t_content *x)
 	int	fd;
 
 	i = 0;
-	x->vertical = 0;
 	fd = open(x->path, O_RDWR);
-	while ((x->gnl = get_next_line(fd)))
+	x->gnl = get_next_line(fd);
+	while (x->gnl)
 	{
 		free(x->gnl);
 		x->vertical++;
+		x->gnl = get_next_line(fd);
 	}
 	x->map = malloc(sizeof(char *) * x->vertical);
 	x->mapx = malloc(sizeof(char *) * x->vertical);
@@ -54,8 +55,6 @@ void	read_map(t_content *x)
 	while (i < x->vertical)
 		x->mapx[i++] = get_next_line(fd);
 	close(fd);
-	if (!(x->map) || !(x->mapx))
-		return(ft_free_map(x), free(x), error("An error occurred while reading the map!"));
 }
 
 void	check_map(t_content *x)
@@ -63,20 +62,21 @@ void	check_map(t_content *x)
 	x->horizontal = length(x->map[0]);
 	x->random = -1;
 	if ((x->map[x->vertical - 1][x->horizontal]) == '\n')
-			return(ft_free_map(x), free(x), error("The last row of the map contains only a newline!"));
+		return (ft_free_map(x), free(x),
+			error("The last row of the map contains only a newline!"));
 	while (++x->random < x->vertical)
 	{
-		if (length(x->map[x->random]) != x->horizontal)
-			return(ft_free_map(x), free(x), error("Map lines are incorrect!"));
+		if (length (x->map[x->random]) != x->horizontal)
+			return (ft_free_map(x), free(x), error("Map lines are incorrect!"));
 		if (x->map[x->random][0] != '1' ||
 			x->map[x->random][x->horizontal - 1] != '1')
-			return(ft_free_map(x), free(x), error("Map walls are incorrect!"));
+			return (ft_free_map(x), free(x), error("Map walls are incorrect!"));
 	}
 	while (++x->random < x->vertical + x->horizontal)
 	{
 		if (x->map[0][x->random - x->vertical] != '1'
 		|| x->map[x->vertical - 1][x->random - x->vertical] != '1')
-			return(ft_free_map(x), free(x), error("Map walls are incorrect!"));
+			return (ft_free_map(x), free(x), error("Map walls are incorrect!"));
 	}
 	x->random = -1;
 }
@@ -101,23 +101,32 @@ void	check_char(t_content *x)
 				x->playerx = i;
 			}
 			else if (x->map[x->random][i] != '1' && x->map[x->random][i] != '0')
-				return(ft_free_map(x), free(x), error("Map variables are incorrect!"));
+				return (ft_free_map(x), free(x),
+					error("Map variables are incorrect!"));
 		}
 	}
-	if (x->e != 1 || x->p != 1 || x->c < 1)
-		return(ft_free_map(x), free(x), error("Numbers of the map variables are incorrect!"));
 	x->random = -1;
 }
 
 void	all_map_checks(t_content *x)
 {
 	x->random = -1;
+	x->c = 0;
+	x->e = 0;
+	x->p = 0;
+	x->vertical = 0;
 	map_control(x);
 	read_map(x);
 	if (x->vertical == 0)
-		return(ft_free_map(x), free(x), error("Invalid map dimensions!"));
+		return (ft_free_map(x), free(x), error("Invalid map dimensions!"));
+	if (!(x->map) || !(x->mapx))
+		return (ft_free_map(x), free(x),
+			error ("An error occurred while reading the map!"));
 	check_map(x);
 	check_char(x);
+	if (x->e != 1 || x->p != 1 || x->c < 1)
+		return (ft_free_map(x), free(x),
+			error("Numbers of the map variables are incorrect!"));
 	flood_fill(x, x->playerx, x->playery);
 	flood_check(x);
 }
