@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_checker.c                                      :+:      :+:    :+:   */
+/*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 02:08:16 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/22 20:57:08 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/24 18:48:46 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	read_map(t_content *x)
 		x->vertical++;
 		x->gnl = get_next_line(fd);
 	}
-	x->map = malloc(sizeof(char *) * x->vertical);
+	x->map = malloc(sizeof(char	*) * x->vertical);
 	x->mapx = malloc(sizeof(char *) * x->vertical);
 	if (!x->map || !x->mapx)
 		return (free(x), error("Memory allocation for map failed!"));

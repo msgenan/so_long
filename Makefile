@@ -4,7 +4,7 @@ SRCS = ./src/so_long.c \
 ./src/key_press.c \
 ./src/parse_map.c \
 ./src/flood_fill.c \
-./src/map_checker.c \
+./src/check_map.c \
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g

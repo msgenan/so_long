@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:14:29 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/17 19:08:32 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/25 17:27:40 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_content
 int		ft_cleaner(t_content *x);
 int		length(const char *str);
 int		key_press(int keycode, t_content *x);
+void	exit_control(t_content *x, int i);
 void	error(char *error);
 void	ft_free_map(t_content *x);
 void	ft_image_destroy(t_content *x);
