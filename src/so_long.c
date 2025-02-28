@@ -6,7 +6,7 @@
 /*   By: mugenan <mugenan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:14:54 by mugenan           #+#    #+#             */
-/*   Updated: 2025/02/24 17:51:04 by mugenan          ###   ########.fr       */
+/*   Updated: 2025/02/28 18:28:28 by mugenan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int ac, char *av[])
 		return (0);
 	x = malloc(sizeof(t_content));
 	if (!x)
-		return (free(x), error("Memory allocation for t_content failed!"), 0);
+		error("Memory allocation for t_content failed!");
 	x->path = av[1];
 	all_map_checks(x);
 	x->a = malloc(sizeof(t_mlx));
